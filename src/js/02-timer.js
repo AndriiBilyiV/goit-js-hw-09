@@ -85,8 +85,13 @@ function addLeadingZero(value) {
 }
 
 function timerChange() {
+    
     const setTime = new Date (localStorage.getItem('current-time')).getTime();
     const currentTime = new Date().getTime();
+    if (setTime < currentTime) {
+        clearInterval(timerInt);
+        return
+    }
     const result = convertMs(setTime - currentTime);
     daysField.textContent = addLeadingZero(result.days);
     hoursField.textContent = addLeadingZero(result.hours);
@@ -96,8 +101,9 @@ function timerChange() {
 }
 
 // listener and countdown
+let timerInt;
 
 startBtn.addEventListener('click', () => {
     localStorage.setItem('current-time', dateField.value)
-    const timerInt = setInterval(timerChange,1000)
+    timerInt = setInterval(timerChange,1000)
 })
